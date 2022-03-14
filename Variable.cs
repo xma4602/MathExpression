@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MathExpression
 {
@@ -30,7 +26,6 @@ namespace MathExpression
         {
             return Compile()(arguments);
         }
-
         public Func<double[], double> Compile()
         {
             return (double[] args) => args[VariableIndex];

@@ -72,8 +72,15 @@ namespace MathExpression
 
             if (flag)
             {
-                var setThis = new HashSet<IExpression>(new IExpression[] { LeftOperand, RightOperand });
-                flag = setThis.SetEquals(new IExpression[] { other.LeftOperand, other.RightOperand });
+                if (Type == MathOperation.Addition || Type == MathOperation.Multiplication)
+                {
+                    flag = (LeftOperand.Equals(other.LeftOperand) && RightOperand.Equals(other.RightOperand)) ||
+                         (LeftOperand.Equals(other.RightOperand) && RightOperand.Equals(other.LeftOperand));
+                }
+                else
+                {
+                    flag = LeftOperand.Equals(other.LeftOperand) && RightOperand.Equals(other.RightOperand);
+                }
             }
 
             return flag;
