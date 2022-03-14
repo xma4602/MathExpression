@@ -31,14 +31,18 @@ namespace MathExpression
             return arguments[VariableIndex];
         }
 
+        public Func<double[], double> Compile()
+        {
+            return (double[] args) => args[VariableIndex];
+        }
+
         public bool Equals(Variable other)
         {
             return VariableIndex == other.VariableIndex;
         }
-
         public override string ToString()
         {
             return $"X{VariableIndex}";
-        }
+        }               
     }
 }

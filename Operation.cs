@@ -61,6 +61,28 @@ namespace MathExpression
 
             return result;
         }
+        public Func<double[], double> Compile()
+        {
+            Func<double[], double> result;
+            var left = LeftOperand.Compile();
+            var right = RightOperand.Compile();
+
+            switch (Type)
+            {
+                case MathOperation.Addition:
+                    result = (double[] args) => left(args) + right(args); break;
+                case MathOperation.Substructing:
+                    result = (double[] args) => left(args) - right(args); break;
+                case MathOperation.Multiplication:
+                    result = (double[] args) => left(args) * right(args); break;
+                case MathOperation.Division:
+                    result = (double[] args) => left(args) / right(args); break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(Type), "Параметр должен принадлежать типу MathOperation.");
+            }
+
+            return result;
+        }
 
         public bool Equals(Operation other)
         {
@@ -74,7 +96,6 @@ namespace MathExpression
 
             return flag;
         }
-
         public override string ToString()
         {
             string operation;
@@ -94,6 +115,6 @@ namespace MathExpression
             }
 
             return $"({LeftOperand} {operation} {RightOperand})";
-        }
+        }        
     }
 }

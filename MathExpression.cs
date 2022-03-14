@@ -30,6 +30,7 @@ namespace MathExpression
         {
             return Start.GetValue(argument);
         }
+        public Func<double[], double> Compile() => Start.Compile();
 
         public static MathExpression SetOperation(MathOperation type, IExpression leftOperand, IExpression rightOperand)
         {

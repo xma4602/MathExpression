@@ -30,14 +30,20 @@ namespace MathExpression
             return Value;
         }
 
+        public Func<double[], double> Compile()
+        {
+           return (double[] args) => Value;
+        }
+
         public bool Equals(Constant other)
         {
             return Value == other.Value;
         }
-
         public override string ToString()
         {
             return $"{Value}";
         }
+
+        
     }
 }

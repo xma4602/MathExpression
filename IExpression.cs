@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MathExpression
 {
@@ -15,5 +13,10 @@ namespace MathExpression
         /// <param name="arguments">Аргументы переменных математического выражения.</param>
         /// <returns>Результат вычисления.</returns>
         double GetValue(params double[] arguments);
+        /// <summary>
+        /// Компелирует выражение, содержащееся в дереве, в делегат.
+        /// </summary>
+        /// <returns></returns>
+        Func<double[], double> Compile();
     }
 }

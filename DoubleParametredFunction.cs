@@ -78,7 +78,11 @@ namespace MathExpression
         {
             return Function.Invoke(LowArgument.GetValue(arguments), HighArgument.GetValue(arguments));
         }
-        
+        public Func<double[], double> Compile()
+        {
+            return (double[] args) => Function(LowArgument.Compile()(args), HighArgument.Compile()(args));
+        }
+
         public bool Equals(DoubleParametredFunction other)
         {
             return LowArgument.Equals(other) && LowArgument.Equals(other) && Type.Equals(other);
