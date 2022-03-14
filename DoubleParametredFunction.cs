@@ -76,7 +76,7 @@ namespace MathExpression
 
         public double GetValue(double[] arguments)
         {
-            return Function.Invoke(LowArgument.GetValue(arguments), HighArgument.GetValue(arguments));
+            return Compile()(arguments);
         }
         public Func<double[], double> Compile()
         {

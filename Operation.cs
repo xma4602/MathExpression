@@ -41,25 +41,7 @@ namespace MathExpression
 
         public double GetValue(double[] arguments)
         {
-            double result;
-            double a = LeftOperand.GetValue(arguments);
-            double b = RightOperand.GetValue(arguments);
-
-            switch (Type)
-            {
-                case MathOperation.Addition:
-                    result = a + b; break;
-                case MathOperation.Substructing:
-                    result = a - b; break;
-                case MathOperation.Multiplication:
-                    result = a * b; break;
-                case MathOperation.Division:
-                    result = a / b; break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Type), "Параметр должен принадлежать типу MathOperation.");
-            }
-
-            return result;
+            return Compile()(new double[] { LeftOperand.GetValue(arguments), RightOperand.GetValue(arguments) });
         }
         public Func<double[], double> Compile()
         {
@@ -90,7 +72,7 @@ namespace MathExpression
 
             if (flag)
             {
-                var setThis = new HashSet<IExpression>(new IExpression[]{ LeftOperand, RightOperand });
+                var setThis = new HashSet<IExpression>(new IExpression[] { LeftOperand, RightOperand });
                 flag = setThis.SetEquals(new IExpression[] { other.LeftOperand, other.RightOperand });
             }
 
@@ -115,6 +97,6 @@ namespace MathExpression
             }
 
             return $"({LeftOperand} {operation} {RightOperand})";
-        }        
+        }
     }
 }

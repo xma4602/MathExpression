@@ -104,7 +104,7 @@ namespace MathExpression
 
         public double GetValue(double[] arguments)
         {
-            return Function.Invoke(Argument.GetValue(arguments));
+            return Compile()(arguments);
         }
         public Func<double[], double> Compile()
         {

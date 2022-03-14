@@ -28,7 +28,7 @@ namespace MathExpression
 
         public double GetValue(double[] arguments)
         {
-            return arguments[VariableIndex];
+            return Compile()(arguments);
         }
 
         public Func<double[], double> Compile()

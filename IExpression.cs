@@ -14,9 +14,9 @@ namespace MathExpression
         /// <returns>Результат вычисления.</returns>
         double GetValue(params double[] arguments);
         /// <summary>
-        /// Компелирует выражение, содержащееся в дереве, в делегат.
+        /// Компелирует выражение, содержащееся в узле дерева, в делегат.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Делегал, эквивалентный содержанию поддерева выражений.</returns>
         Func<double[], double> Compile();
     }
 }

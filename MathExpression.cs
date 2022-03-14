@@ -26,10 +26,11 @@ namespace MathExpression
         /// </summary>
         /// <param name="arguments">Аргументы переменных математического выражения.</param>
         /// <returns>Результат вычисления.</returns>
-        public double GetValue(double argument)
-        {
-            return Start.GetValue(argument);
-        }
+        public double GetValue(params double[] arguments) => Start.GetValue(arguments);
+        /// <summary>
+        /// Компелирует выражение, содержащееся в дереве, в делегат.
+        /// </summary>
+        /// <returns>Делегал, эквивалентный структуре дерева выражений.</returns>
         public Func<double[], double> Compile() => Start.Compile();
 
         public static MathExpression SetOperation(MathOperation type, IExpression leftOperand, IExpression rightOperand)
