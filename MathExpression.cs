@@ -126,7 +126,7 @@ namespace MathExpression
         {
             return new MathExpression(new Operation(MathOperation.Division, left.Start, right.Start));
         }
-       
+
         #endregion
     }
 }
