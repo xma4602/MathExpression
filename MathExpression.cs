@@ -31,49 +31,102 @@ namespace MathExpression
         /// Компелирует выражение, содержащееся в дереве, в делегат.
         /// </summary>
         /// <returns>Делегал, эквивалентный структуре дерева выражений.</returns>
-        public Func<double[], double> Compile() => Start.Compile();
+        public Func<double[], double> Compile => Start.Compile();
 
-        public static MathExpression SetOperation(MathOperation type, IExpression leftOperand, IExpression rightOperand)
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-операцией и операндами,
+        /// одно из которых - данное дерево, другое - переданный параметр.
+        /// Если параметр side будет true, поместит второй операнд в левое поддерево, иначе - в правое поддерево.
+        /// </summary>
+        /// <param name="type">Вид математической операции нового корня.</param>
+        /// <param name="SecondOperand">Второй операнд нового дерева.</param>
+        /// <param name="side">Сторона дерева, в которую будет перемещен второй операнд.</param>
+        public void Set(MathOperation type, IExpression SecondOperand, bool side)
         {
-            return new MathExpression(new Operation(type, leftOperand, rightOperand));
+            Start = side ? new Operation(type, SecondOperand, Start) : new Operation(type, Start, SecondOperand);
         }
-        public static MathExpression SetOperation(MathOperation type, MathExpression leftOperand, MathExpression rightOperand)
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-функцией, аргумент которой - данное дерево.
+        /// </summary>
+        /// <param name="function">Функция, которая станет корнем дерева.</param>
+        public void Set(Func<double, double> function)
         {
-            return new MathExpression(new Operation(type, leftOperand.Start, rightOperand.Start));
+            Start = new SingleParametredFunction(function, Start);
+        }
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-функцией, аргумент которой - данное дерево.
+        /// </summary>
+        /// <param name="type">Тип функции, которая станет корнем дерева.</param>
+        public void Set(SingleParametredFunctionType type)
+        {
+            Start = new SingleParametredFunction(type, Start);
+        }
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-функцией, один аргумент которой - данное дерево, второй - переданный параметр.
+        /// Если параметр side будет true, поместит второй операнд в левое поддерево, иначе - в правое поддерево.
+        /// </summary>
+        /// <param name="function">Функция, которая станет корнем дерева.</param>
+        /// <param name="SecondOperand">Второй операнд нового дерева.</param>
+        /// <param name="side">Сторона дерева, в которую будет перемещен второй операнд.</param>
+        public void Set(Func<double, double, double> function, IExpression SecondOperand, bool side)
+        {
+            Start = side ? new DoubleParametredFunction(function, SecondOperand, Start) : new DoubleParametredFunction(function, Start, SecondOperand);
+        }
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-функцией, один аргумент которой - данное дерево, второй - переданный параметр.
+        /// Если параметр side будет true, поместит второй операнд в левое поддерево, иначе - в правое поддерево.
+        /// </summary>
+        /// <param name="type">Тип функции, которая станет корнем дерева.</param>
+        /// <param name="SecondOperand">Второй операнд нового дерева.</param>
+        /// <param name="side">Сторона дерева, в которую будет перемещен второй операнд.</param>
+        public void Set(DoubleParametredFunctionType type, IExpression SecondOperand, bool side)
+        {
+            Start = side ? new DoubleParametredFunction(type, SecondOperand, Start) : new DoubleParametredFunction(type, Start, SecondOperand);
         }
 
-        public static MathExpression SetFunction(Func<double, double> func, MathExpression formula)
-        {
-            return new MathExpression(new SingleParametredFunction(func, formula.Start));
-        }
-        public static MathExpression SetFunction(SingleParametredFunctionType type, MathExpression formula)
-        {
-            return new MathExpression(new SingleParametredFunction(type, formula.Start));
-        }
-        public static MathExpression SetFunction(Func<double, double, double> func, MathExpression lowFormula, MathExpression highFormula)
-        {
-            return new MathExpression(new DoubleParametredFunction(func, lowFormula.Start, highFormula.Start));
-        }
-        public static MathExpression SetFunction(DoubleParametredFunctionType type, MathExpression lowFormula, MathExpression highFormula)
-        {
-            return new MathExpression(new DoubleParametredFunction(type, lowFormula.Start, highFormula.Start));
-        }
+        #region Операторы
 
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-операцией суммирования.
+        /// </summary>
+        /// <param name="left">Операнд, который будет перемещен в левое поддерево.</param>
+        /// <param name="right">Операнд, который будет перемещен в правое поддерево.</param>
+        /// <returns>Новое дерево выражений.</returns>
         public static MathExpression operator +(MathExpression left, MathExpression right)
         {
-            return SetOperation(MathOperation.Addition, left.Start, right.Start);
+            return new MathExpression(new Operation(MathOperation.Addition, left.Start, right.Start));
         }
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-операцией вычитания.
+        /// </summary>
+        /// <param name="left">Операнд, который будет перемещен в левое поддерево.</param>
+        /// <param name="right">Операнд, который будет перемещен в правое поддерево.</param>
+        /// <returns>Новое дерево выражений.</returns>
         public static MathExpression operator -(MathExpression left, MathExpression right)
         {
-            return SetOperation(MathOperation.Substructing, left.Start, right.Start);
+            return new MathExpression(new Operation(MathOperation.Substructing, left.Start, right.Start));
         }
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-операцией умножения.
+        /// </summary>
+        /// <param name="left">Операнд, который будет перемещен в левое поддерево.</param>
+        /// <param name="right">Операнд, который будет перемещен в правое поддерево.</param>
+        /// <returns>Новое дерево выражений.</returns>
         public static MathExpression operator *(MathExpression left, MathExpression right)
         {
-            return SetOperation(MathOperation.Multiplication, left.Start, right.Start);
+            return new MathExpression(new Operation(MathOperation.Multiplication, left.Start, right.Start));
         }
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-операцией деления.
+        /// </summary>
+        /// <param name="left">Операнд, который будет перемещен в левое поддерево.</param>
+        /// <param name="right">Операнд, который будет перемещен в правое поддерево.</param>
+        /// <returns>Новое дерево выражений.</returns>
         public static MathExpression operator /(MathExpression left, MathExpression right)
         {
-            return SetOperation(MathOperation.Division, left.Start, right.Start);
+            return new MathExpression(new Operation(MathOperation.Division, left.Start, right.Start));
         }
+       
+        #endregion
     }
 }
