@@ -10,34 +10,46 @@ namespace MathExpression
         /// <summary>
         /// Порядковый индекс переменной.
         /// </summary>
-        public uint VariableIndex { get; }
+        public string Name { get; set; }
+        public string[] Indexes { get; set; }
 
         /// <summary>
-        /// Инициализирует переменную, как узел дерева выражений.
+        /// Инициализирует переменную с именем, как узел дерева выражений.
         /// </summary>
-        /// <param name="index">Порядковый индекс переменной.</param>
-        public Variable(uint index)
+        /// <param name="name">Имя переменной.</param>
+        public Variable(string name): this(name, null)
         {
-            if (index < 0) throw new ArgumentException("Недопустим индекс переменной ниже нуля", nameof(index));
-            VariableIndex = index;
+
+        }
+
+        /// <summary>
+        /// Инициализирует переменную с именем и индексами, как узел дерева выражений.
+        /// </summary>
+        /// <param name="name">Имя переменной.</param>
+        /// <param name="indexes">Имена индексов переменной.</param>
+        public Variable(string name, params string[] indexes)
+        {
+            Name = name;
+            Indexes = indexes;
         }
 
         public double GetValue(double[] arguments)
         {
             return Compile()(arguments);
         }
+
         public Func<double[], double> Compile()
         {
-            return (double[] args) => args[VariableIndex];
+            return (double[] args) => args[Name];
         }
 
         public bool Equals(Variable other)
         {
-            return VariableIndex == other.VariableIndex;
+            return Name == other.Name;
         }
         public override string ToString()
         {
-            return $"X{VariableIndex}";
-        }               
+            return $"{Name}";
+        }
     }
 }

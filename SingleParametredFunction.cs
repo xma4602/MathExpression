@@ -3,20 +3,6 @@
 namespace MathExpression
 {
     /// <summary>
-    /// Представляет перечисление основных математических функций с одним параметром.
-    /// </summary>
-    public enum SingleParametredFunctionType
-    {
-        NotDefined,
-        Sin, Arcsin, Sh, Arcsh,
-        Cos, Arccos, Ch, Arcch,
-        Tg, Arctg, Th, Arcth,
-        Ctg, Arcctg, Cth, Arccth,
-        Ln, Log2, Log10,
-        Abs, Sqr, Sqrt,
-    }
-
-    /// <summary>
     /// Представляет математическую функцию с одним параметром, как узел дерева выражений.
     /// </summary>
     public class SingleParametredFunction : IExpression, IEquatable<SingleParametredFunction>
@@ -119,6 +105,6 @@ namespace MathExpression
         {
             if (SingleParametredFunctionType.Sin < Type && Type < SingleParametredFunctionType.Sqrt) return $"{Type}({Argument})";
             else throw new ArgumentOutOfRangeException(nameof(Type), $"Параметр должен принадлежать типу {nameof(SingleParametredFunctionType)}.");
-        }        
+        }
     }
 }

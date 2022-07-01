@@ -21,6 +21,27 @@ namespace MathExpression
             Start = start ?? throw new ArgumentNullException("Элемент формулы не может быть null", nameof(start));
         }
 
+        public void SetValuesForVariables(string[] names, double[] values)
+        {
+            if (Start is Variable) Start = SetValuesForVariables((Variable)Start, names, values);
+            else
+            {
+                IExpression node = Start;
+                IExpression node2;
+
+                if (Start is Variable)
+            }
+        }
+
+        private IExpression SetValuesForVariables(Variable v, string[] names, double[] values)
+        {
+            int index = 0;
+            for (; v.Name != names[index] && index < names.Length; index++) { }
+
+            if (index >= names.Length) return v;
+            else return new Constant(values[index]);
+        }
+
         /// <summary>
         /// Вычисляет значение математического выражения, исходя из значений переданных аргументов.
         /// </summary>
@@ -28,7 +49,7 @@ namespace MathExpression
         /// <returns>Результат вычисления.</returns>
         public double GetValue(params double[] arguments) => Start.GetValue(arguments);
         /// <summary>
-        /// Компелирует выражение, содержащееся в дереве, в делегат.
+        /// Компелирует в делегат выражение, содержащееся в дереве.
         /// </summary>
         /// <returns>Делегал, эквивалентный структуре дерева выражений.</returns>
         public Func<double[], double> Compile => Start.Compile();
@@ -39,19 +60,11 @@ namespace MathExpression
         /// Если параметр side будет true, поместит второй операнд в левое поддерево, иначе - в правое поддерево.
         /// </summary>
         /// <param name="type">Вид математической операции нового корня.</param>
-        /// <param name="SecondOperand">Второй операнд нового дерева.</param>
+        /// <param name="secondOperand">Второй операнд нового дерева.</param>
         /// <param name="side">Сторона дерева, в которую будет перемещен второй операнд.</param>
-        public void Set(MathOperation type, IExpression SecondOperand, bool side)
+        public void Set(MathOperation type, IExpression secondOperand, bool side)
         {
-            Start = side ? new Operation(type, SecondOperand, Start) : new Operation(type, Start, SecondOperand);
-        }
-        /// <summary>
-        /// Задает новое дерево выражений с корнем-функцией, аргумент которой - данное дерево.
-        /// </summary>
-        /// <param name="function">Функция, которая станет корнем дерева.</param>
-        public void Set(Func<double, double> function)
-        {
-            Start = new SingleParametredFunction(function, Start);
+            Start = side ? new Operation(type, secondOperand, Start) : new Operation(type, Start, secondOperand);
         }
         /// <summary>
         /// Задает новое дерево выражений с корнем-функцией, аргумент которой - данное дерево.
@@ -65,24 +78,35 @@ namespace MathExpression
         /// Задает новое дерево выражений с корнем-функцией, один аргумент которой - данное дерево, второй - переданный параметр.
         /// Если параметр side будет true, поместит второй операнд в левое поддерево, иначе - в правое поддерево.
         /// </summary>
-        /// <param name="function">Функция, которая станет корнем дерева.</param>
-        /// <param name="SecondOperand">Второй операнд нового дерева.</param>
+        /// <param name="type">Тип функции, которая станет корнем дерева.</param>
+        /// <param name="secondOperand">Второй операнд нового дерева.</param>
         /// <param name="side">Сторона дерева, в которую будет перемещен второй операнд.</param>
-        public void Set(Func<double, double, double> function, IExpression SecondOperand, bool side)
+        public void Set(DoubleParametredFunctionType type, IExpression secondOperand, bool side)
         {
-            Start = side ? new DoubleParametredFunction(function, SecondOperand, Start) : new DoubleParametredFunction(function, Start, SecondOperand);
+            Start = side ? new DoubleParametredFunction(type, secondOperand, Start) : new DoubleParametredFunction(type, Start, secondOperand);
+        }
+
+        /// <summary>
+        /// Задает новое дерево выражений с корнем-функцией, аргумент которой - данное дерево.
+        /// </summary>
+        /// <param name="function">Функция, которая станет корнем дерева.</param>
+        public void Set(Func<double, double> function)
+        {
+            Start = new SingleParametredFunction(function, Start);
         }
         /// <summary>
         /// Задает новое дерево выражений с корнем-функцией, один аргумент которой - данное дерево, второй - переданный параметр.
         /// Если параметр side будет true, поместит второй операнд в левое поддерево, иначе - в правое поддерево.
         /// </summary>
-        /// <param name="type">Тип функции, которая станет корнем дерева.</param>
-        /// <param name="SecondOperand">Второй операнд нового дерева.</param>
+        /// <param name="function">Функция, которая станет корнем дерева.</param>
+        /// <param name="secondOperand">Второй операнд нового дерева.</param>
         /// <param name="side">Сторона дерева, в которую будет перемещен второй операнд.</param>
-        public void Set(DoubleParametredFunctionType type, IExpression SecondOperand, bool side)
+        public void Set(Func<double, double, double> function, IExpression secondOperand, bool side)
         {
-            Start = side ? new DoubleParametredFunction(type, SecondOperand, Start) : new DoubleParametredFunction(type, Start, SecondOperand);
+            Start = side ? new DoubleParametredFunction(function, secondOperand, Start) :
+                new DoubleParametredFunction(function, Start, secondOperand);
         }
+
 
         #region Операторы
 

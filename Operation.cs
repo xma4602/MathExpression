@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace MathExpression
 {
-    /// <summary>
-    /// Представляет перечисление базовых арифметитечких операций: сложение, вычитание, умножение, деление.
-    /// </summary>
-    public enum MathOperation { Addition, Substructing, Multiplication, Division }
-
     /// <summary>
     /// Представляет математическую операцию, как узел дерева выражений.
     /// </summary>
