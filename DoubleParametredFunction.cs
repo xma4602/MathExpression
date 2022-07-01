@@ -15,11 +15,11 @@ namespace MathExpression
         /// <summary>
         /// Нижний аргумент функции.
         /// </summary>
-        public IExpression LowArgument { get; }
+        public IExpression LowArgument { get; set; }
         /// <summary>
         /// Верхний аргумент функции.
         /// </summary>
-        public IExpression HighArgument { get; }
+        public IExpression HighArgument { get; set; }
         /// <summary>
         /// Тип математической функции.
         /// </summary>
@@ -90,7 +90,11 @@ namespace MathExpression
 
         public override void SetValuesForVariables(string[] names, double[] values)
         {
-            throw new NotImplementedException();
+            if (LowArgument is Variable) LowArgument = SetValuesForVariables((Variable)LowArgument, names, values);
+            else if (LowArgument is Function) ((Function)LowArgument).SetValuesForVariables(names, values);
+
+            if (HighArgument is Variable) HighArgument = SetValuesForVariables((Variable)HighArgument, names, values);
+            else if (HighArgument is Function) ((Function)HighArgument).SetValuesForVariables(names, values);
         }
     }
 }

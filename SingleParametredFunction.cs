@@ -5,16 +5,16 @@ namespace MathExpression
     /// <summary>
     /// Представляет математическую функцию с одним параметром, как узел дерева выражений.
     /// </summary>
-    public class SingleParametredFunction : IExpression, IEquatable<SingleParametredFunction>
+    public class SingleParametredFunction : Function, IExpression, IEquatable<SingleParametredFunction>
     {
         /// <summary>
         /// Математическая функция выражения.
         /// </summary>
-        public Func<double, double> Function { get; }
+        public Func<double, double> Function { get; set; }
         /// <summary>
         /// Выражение-аргумент функции.
         /// </summary>
-        public IExpression Argument { get; }
+        public IExpression Argument { get; set; }
         /// <summary>
         /// Тип математической функции
         /// </summary>
@@ -101,6 +101,12 @@ namespace MathExpression
         public double GetValue(string[] names, double[] values)
         {
             return Function(Argument.GetValue(names,values));
+        }
+
+        public override void SetValuesForVariables(string[] names, double[] values)
+        {
+            if (Argument is Variable) Argument = SetValuesForVariables((Variable)Argument, names, values);
+            else if (Argument is Function) ((Function)Argument).SetValuesForVariables(names, values);
         }
     }
 }

@@ -21,7 +21,6 @@ namespace MathExpression
             Value = value;
         }
 
-
         public bool Equals(Constant other)
         {
             return Value == other.Value;

@@ -2,11 +2,11 @@
 
 namespace MathExpression
 {
-    public abstract class Function
+    public abstract class Function 
     {
         public abstract void SetValuesForVariables(string[] names, double[] values);
 
-        private IExpression SetValuesForVariables(Variable v, string[] names, double[] values)
+        protected IExpression SetValuesForVariables(Variable v, string[] names, double[] values)
         {
             int index = GetMassiveIndex(v, names, values);
 
@@ -14,7 +14,7 @@ namespace MathExpression
             else return new Constant(values[index]);
         }
 
-        private int GetMassiveIndex(Variable v, string[] names, double[] values)
+        protected int GetMassiveIndex(Variable v, string[] names, double[] values)
         {
             int index = 0;
             for (; v.Name != names[index] && index < names.Length; index++) { }

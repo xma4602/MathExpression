@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет математическую операцию, как узел дерева выражений.
     /// </summary>
-    public class Operation : IExpression, IEquatable<Operation>
+    public class Operation : Function, IExpression, IEquatable<Operation>
     {
         /// <summary>
         /// Тип математической операции.
@@ -14,11 +14,11 @@ namespace MathExpression
         /// <summary>
         /// Левый операнд математической операции.
         /// </summary>
-        public IExpression LeftOperand { get; }
+        public IExpression LeftOperand { get; set; }
         /// <summary>
         /// Правый операнд математической операции.
         /// </summary>
-        public IExpression RightOperand { get; }
+        public IExpression RightOperand { get; set; }
 
         /// <summary>
         /// Инициализирует экземпляр операции дерева выражений.
@@ -95,6 +95,15 @@ namespace MathExpression
 
             return result;
 
+        }
+
+        public override void SetValuesForVariables(string[] names, double[] values)
+        {
+            if (LeftOperand is Variable) LeftOperand = SetValuesForVariables((Variable)LeftOperand, names, values);
+            else if (LeftOperand is Function) ((Function)LeftOperand).SetValuesForVariables(names, values);
+
+            if (RightOperand is Variable) RightOperand = SetValuesForVariables((Variable)RightOperand, names, values);
+            else if (RightOperand is Function) ((Function)RightOperand).SetValuesForVariables(names, values);
         }
     }
 }
