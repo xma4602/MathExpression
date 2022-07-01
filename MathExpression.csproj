@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoubleParametredFunction.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Function.cs" />
     <Compile Include="MathExpression.cs" />
     <Compile Include="IExpression.cs" />
     <Compile Include="Operation.cs" />

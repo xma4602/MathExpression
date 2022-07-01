@@ -17,6 +17,11 @@ namespace MathExpression
     }
 
     /// <summary>
+    /// Представляет перечисление основных математических функций с двумя параметрами.
+    /// </summary>
+    public enum DoubleParametredFunctionType { NotDefined, Log, Pow }
+
+    /// <summary>
     /// Представляет перечисление базовых арифметитечких операций: сложение, вычитание, умножение, деление.
     /// </summary>
     public enum MathOperation { Addition, Substructing, Multiplication, Division }

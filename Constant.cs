@@ -21,15 +21,6 @@ namespace MathExpression
             Value = value;
         }
 
-        public double GetValue(params double[] arguments)
-        {
-            return Compile()(arguments);
-        }
-
-        public Func<double[], double> Compile()
-        {
-           return (double[] args) => Value;
-        }
 
         public bool Equals(Constant other)
         {
@@ -38,6 +29,11 @@ namespace MathExpression
         public override string ToString()
         {
             return $"{Value}";
+        }
+
+        public double GetValue(string[] names, double[] values)
+        {
+            return Value;
         }
     }
 }

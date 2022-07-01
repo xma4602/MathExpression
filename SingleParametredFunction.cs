@@ -88,15 +88,6 @@ namespace MathExpression
             return func;
         }
 
-        public double GetValue(double[] arguments)
-        {
-            return Compile()(arguments);
-        }
-        public Func<double[], double> Compile()
-        {
-            return (double[] args) => Function(Argument.Compile()(args));
-        }
-
         public bool Equals(SingleParametredFunction other)
         {
             return Argument.Equals(other) && Type.Equals(other);
@@ -105,6 +96,11 @@ namespace MathExpression
         {
             if (SingleParametredFunctionType.Sin < Type && Type < SingleParametredFunctionType.Sqrt) return $"{Type}({Argument})";
             else throw new ArgumentOutOfRangeException(nameof(Type), $"Параметр должен принадлежать типу {nameof(SingleParametredFunctionType)}.");
+        }
+
+        public double GetValue(string[] names, double[] values)
+        {
+            return Function(Argument.GetValue(names,values));
         }
     }
 }

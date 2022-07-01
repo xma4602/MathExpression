@@ -11,17 +11,17 @@ namespace MathExpression
         /// Порядковый индекс переменной.
         /// </summary>
         public string Name { get; set; }
-        public string[] Indexes { get; set; }
 
         /// <summary>
         /// Инициализирует переменную с именем, как узел дерева выражений.
         /// </summary>
         /// <param name="name">Имя переменной.</param>
-        public Variable(string name): this(name, null)
+        public Variable(string name)
         {
-
+            Name = name;
         }
 
+        /*
         /// <summary>
         /// Инициализирует переменную с именем и индексами, как узел дерева выражений.
         /// </summary>
@@ -32,16 +32,7 @@ namespace MathExpression
             Name = name;
             Indexes = indexes;
         }
-
-        public double GetValue(double[] arguments)
-        {
-            return Compile()(arguments);
-        }
-
-        public Func<double[], double> Compile()
-        {
-            return (double[] args) => args[Name];
-        }
+        */
 
         public bool Equals(Variable other)
         {
@@ -50,6 +41,22 @@ namespace MathExpression
         public override string ToString()
         {
             return $"{Name}";
+        }
+
+        public double GetValue(string[] names, double[] values)
+        {
+            int index = GetMassiveIndex(names, values);
+            if (index < 0) throw new InvalidOperationException();
+            else return values[index];
+        }
+
+        private int GetMassiveIndex(string[] names, double[] values)
+        {
+            int index = 0;
+            for (; Name != names[index] && index < names.Length; index++) { }
+
+            if (index >= names.Length) return -1;
+            else return index;
         }
     }
 }

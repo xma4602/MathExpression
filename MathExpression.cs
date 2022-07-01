@@ -21,38 +21,12 @@ namespace MathExpression
             Start = start ?? throw new ArgumentNullException("Элемент формулы не может быть null", nameof(start));
         }
 
-        public void SetValuesForVariables(string[] names, double[] values)
-        {
-            if (Start is Variable) Start = SetValuesForVariables((Variable)Start, names, values);
-            else
-            {
-                IExpression node = Start;
-                IExpression node2;
-
-                if (Start is Variable)
-            }
-        }
-
-        private IExpression SetValuesForVariables(Variable v, string[] names, double[] values)
-        {
-            int index = 0;
-            for (; v.Name != names[index] && index < names.Length; index++) { }
-
-            if (index >= names.Length) return v;
-            else return new Constant(values[index]);
-        }
-
         /// <summary>
         /// Вычисляет значение математического выражения, исходя из значений переданных аргументов.
         /// </summary>
         /// <param name="arguments">Аргументы переменных математического выражения.</param>
         /// <returns>Результат вычисления.</returns>
-        public double GetValue(params double[] arguments) => Start.GetValue(arguments);
-        /// <summary>
-        /// Компелирует в делегат выражение, содержащееся в дереве.
-        /// </summary>
-        /// <returns>Делегал, эквивалентный структуре дерева выражений.</returns>
-        public Func<double[], double> Compile => Start.Compile();
+        public double GetValue(string[] names, double[] values) => Start.GetValue(names, values);
 
         /// <summary>
         /// Задает новое дерево выражений с корнем-операцией и операндами,
@@ -106,7 +80,6 @@ namespace MathExpression
             Start = side ? new DoubleParametredFunction(function, secondOperand, Start) :
                 new DoubleParametredFunction(function, Start, secondOperand);
         }
-
 
         #region Операторы
 

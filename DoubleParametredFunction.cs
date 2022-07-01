@@ -2,15 +2,11 @@
 
 namespace MathExpression
 {
-    /// <summary>
-    /// Представляет перечисление основных математических функций с двумя параметрами.
-    /// </summary>
-    public enum DoubleParametredFunctionType { NotDefined, Log, Pow }
 
     /// <summary>
     /// Представляет математическую функцию с двумя параметрами, как узел дерева выражений.
     /// </summary>
-    public class DoubleParametredFunction : IExpression, IEquatable<DoubleParametredFunction>
+    public class DoubleParametredFunction : Function, IExpression, IEquatable<DoubleParametredFunction>
     {
         /// <summary>
         /// Математическая функция выражения.
@@ -74,15 +70,6 @@ namespace MathExpression
             return func;
         }
 
-        public double GetValue(double[] arguments)
-        {
-            return Compile()(arguments);
-        }
-        public Func<double[], double> Compile()
-        {
-            return (double[] args) => Function(LowArgument.Compile()(args), HighArgument.Compile()(args));
-        }
-
         public bool Equals(DoubleParametredFunction other)
         {
             return LowArgument.Equals(other) && LowArgument.Equals(other) && Type.Equals(other);
@@ -94,6 +81,16 @@ namespace MathExpression
             else if (Type == DoubleParametredFunctionType.Log) return $"Log({LowArgument},{HighArgument})";
             else if (Type == DoubleParametredFunctionType.NotDefined) return $"{nameof(DoubleParametredFunctionType.NotDefined)}({LowArgument},{HighArgument})";
             else throw new ArgumentOutOfRangeException(nameof(Type), $"Параметр должен принадлежать типу {nameof(DoubleParametredFunctionType)}.");
+        }
+
+        public double GetValue(string[] names, double[] values)
+        {
+            return Function(LowArgument.GetValue(names, values), HighArgument.GetValue(names, values));
+        }
+
+        public override void SetValuesForVariables(string[] names, double[] values)
+        {
+            throw new NotImplementedException();
         }
     }
 }

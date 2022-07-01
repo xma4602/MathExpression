@@ -33,33 +33,6 @@ namespace MathExpression
             RightOperand = rightOperand;
         }
 
-        public double GetValue(double[] arguments)
-        {
-            return Compile()(new double[] { LeftOperand.GetValue(arguments), RightOperand.GetValue(arguments) });
-        }
-        public Func<double[], double> Compile()
-        {
-            Func<double[], double> result;
-            var left = LeftOperand.Compile();
-            var right = RightOperand.Compile();
-
-            switch (Type)
-            {
-                case MathOperation.Addition:
-                    result = (double[] args) => left(args) + right(args); break;
-                case MathOperation.Substructing:
-                    result = (double[] args) => left(args) - right(args); break;
-                case MathOperation.Multiplication:
-                    result = (double[] args) => left(args) * right(args); break;
-                case MathOperation.Division:
-                    result = (double[] args) => left(args) / right(args); break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Type), "Параметр должен принадлежать типу MathOperation.");
-            }
-
-            return result;
-        }
-
         public bool Equals(Operation other)
         {
             bool flag = Type.Equals(other.Type);
@@ -98,6 +71,30 @@ namespace MathExpression
             }
 
             return $"({LeftOperand} {operation} {RightOperand})";
+        }
+
+        public double GetValue(string[] names, double[] values)
+        {
+            double result;
+            var left = LeftOperand.GetValue(names, values);
+            var right = RightOperand.GetValue(names, values);
+
+            switch (Type)
+            {
+                case MathOperation.Addition:
+                    result = left + right; break;
+                case MathOperation.Substructing:
+                    result = left - right; break;
+                case MathOperation.Multiplication:
+                    result = left * right; break;
+                case MathOperation.Division:
+                    result = left / right; break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(Type), "Параметр должен принадлежать типу MathOperation.");
+            }
+
+            return result;
+
         }
     }
 }
