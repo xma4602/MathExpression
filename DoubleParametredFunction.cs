@@ -32,11 +32,8 @@ namespace MathExpression
         /// <param name="lowArgument">Нижний аргумент функции.</param>
         /// <param name="highArgument">Верхний аргумент функции.</param>
         public DoubleParametredFunction(Func<double, double, double> func, IExpression lowArgument, IExpression highArgument)
+             : this(func, DoubleParametredFunctionType.NotDefined, lowArgument, highArgument)
         {
-            Function = func;
-            LowArgument = lowArgument;
-            HighArgument = highArgument;
-            Type = DoubleParametredFunctionType.NotDefined;
         }
         /// <summary>
         /// Инициализирует выражение с типовой двухпараметровой функцией.
@@ -45,11 +42,16 @@ namespace MathExpression
         /// <param name="lowArgument">Нижний аргумент функции.</param>
         /// <param name="highArgument">Верхний аргумент функции.</param>
         public DoubleParametredFunction(DoubleParametredFunctionType type, IExpression lowArgument, IExpression highArgument)
+            : this (GetFuctionBy(type), type, lowArgument, highArgument)
+        {
+        }
+
+        public DoubleParametredFunction(Func<double, double, double> func, DoubleParametredFunctionType type, IExpression lowArgument, IExpression highArgument)
         {
             Type = type;
             LowArgument = lowArgument;
             HighArgument = highArgument;
-            Function = GetFuctionBy(type);
+            Function = func;
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace MathExpression
         /// </summary>
         /// <param name="type">Тип математической функции.</param>
         /// <returns>Типовая математическая функция.</returns>
-        public Func<double, double, double> GetFuctionBy(DoubleParametredFunctionType type)
+        protected static Func<double, double, double> GetFuctionBy(DoubleParametredFunctionType type)
         {
             Func<double, double, double> func = null;
             switch (type)

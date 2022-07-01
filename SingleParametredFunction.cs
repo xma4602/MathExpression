@@ -10,7 +10,7 @@ namespace MathExpression
         /// <summary>
         /// Математическая функция выражения.
         /// </summary>
-        public Func<double, double> Function { get; set; }
+        public Func<double, double> Function { get; }
         /// <summary>
         /// Выражение-аргумент функции.
         /// </summary>
@@ -26,20 +26,22 @@ namespace MathExpression
         /// <param name="func">Математическая функция выражения.</param>
         /// <param name="argument">Выражение-аргумент функции.</param>
         public SingleParametredFunction(Func<double, double> func, IExpression argument)
+             : this(func, argument, SingleParametredFunctionType.NotDefined)
         {
-            Argument = argument;
-            Function = func;
-            Type = SingleParametredFunctionType.NotDefined;
         }
         /// <summary>
         /// Инициализирует выражение с типовой однопараметровой функцией.
         /// </summary>
         /// <param name="type">Тип математиеской функции</param>
         /// <param name="argument">Выражение-аргумент функции.</param>
-        public SingleParametredFunction(SingleParametredFunctionType type, IExpression argument)
+        public SingleParametredFunction(SingleParametredFunctionType type, IExpression argument) 
+            : this (GetFuctionBy(type), argument, type)
+        {
+        }
+        public SingleParametredFunction(Func<double, double> func, IExpression argument, SingleParametredFunctionType type)
         {
             Argument = argument;
-            Function = GetFuctionBy(type);
+            Function = func;
             Type = type;
         }
 
@@ -48,7 +50,7 @@ namespace MathExpression
         /// </summary>
         /// <param name="type">Тип математической функции.</param>
         /// <returns>Типовая математическая функция.</returns>
-        protected Func<double, double> GetFuctionBy(SingleParametredFunctionType type)
+        protected static Func<double, double> GetFuctionBy(SingleParametredFunctionType type)
         {
             Func<double, double> func = null;
             switch (type)
