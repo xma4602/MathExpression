@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет константное значение, как узел дерева выражений.
     /// </summary>
-    public class Constant : IExpression, IEquatable<Constant>
+    public class Constant : IExpression
     {
         /// <summary>
         /// Значение константы.
@@ -21,10 +21,6 @@ namespace MathExpression
             Value = value;
         }
 
-        public bool Equals(Constant other)
-        {
-            return Value == other.Value;
-        }
         public override string ToString()
         {
             return $"{Value}";
@@ -33,6 +29,17 @@ namespace MathExpression
         public double GetValue(string[] names, double[] values)
         {
             return Value;
+        }
+
+        public bool Equals(IExpression other)
+        {
+            bool flag = false;
+            if (other is Constant)
+            {
+                flag = Value == (other as Constant).Value;
+            }
+
+            return flag;
         }
     }
 }

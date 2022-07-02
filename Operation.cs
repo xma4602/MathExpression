@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет математическую операцию, как узел дерева выражений.
     /// </summary>
-    public class Operation : Function, IExpression, IEquatable<Operation>
+    public class Operation : Function, IExpression
     {
         /// <summary>
         /// Тип математической операции.
@@ -33,25 +33,6 @@ namespace MathExpression
             RightOperand = rightOperand;
         }
 
-        public bool Equals(Operation other)
-        {
-            bool flag = Type.Equals(other.Type);
-
-            if (flag)
-            {
-                if (Type == MathOperation.Addition || Type == MathOperation.Multiplication)
-                {
-                    flag = (LeftOperand.Equals(other.LeftOperand) && RightOperand.Equals(other.RightOperand)) ||
-                         (LeftOperand.Equals(other.RightOperand) && RightOperand.Equals(other.LeftOperand));
-                }
-                else
-                {
-                    flag = LeftOperand.Equals(other.LeftOperand) && RightOperand.Equals(other.RightOperand);
-                }
-            }
-
-            return flag;
-        }
         public override string ToString()
         {
             string operation;
@@ -104,6 +85,31 @@ namespace MathExpression
 
             if (RightOperand is Variable) RightOperand = SetValuesForVariables((Variable)RightOperand, names, values);
             else if (RightOperand is Function) ((Function)RightOperand).SetValuesForVariables(names, values);
+        }
+
+        public bool Equals(IExpression other)
+        {
+            bool flag = false;
+
+            if (other is Operation)
+            {
+                Operation otherOperation = (Operation)other;
+
+                if (Type.Equals(otherOperation.Type))
+                {
+                    if (Type == MathOperation.Addition || Type == MathOperation.Multiplication)
+                    {
+                        flag = (LeftOperand.Equals(otherOperation.LeftOperand) && RightOperand.Equals(otherOperation.RightOperand)) ||
+                             (LeftOperand.Equals(otherOperation.RightOperand) && RightOperand.Equals(otherOperation.LeftOperand));
+                    }
+                    else
+                    {
+                        flag = LeftOperand.Equals(otherOperation.LeftOperand) && RightOperand.Equals(otherOperation.RightOperand);
+                    }
+                }
+            }
+
+            return flag;
         }
     }
 }

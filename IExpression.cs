@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Определяет методы для узла дерева выражений.
     /// </summary>
-    public interface IExpression
+    public interface IExpression : IEquatable<IExpression>
     {
         /// <summary>
         /// Вычисляет значение математического выражения, исходя из значений переданных аргументов.

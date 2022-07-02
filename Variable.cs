@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет переменную, как узел дерева выражений.
     /// </summary>
-    public class Variable : IExpression, IEquatable<Variable>
+    public class Variable : IExpression
     {
         /// <summary>
         /// Порядковый индекс переменной.
@@ -34,10 +34,6 @@ namespace MathExpression
         }
         */
 
-        public bool Equals(Variable other)
-        {
-            return Name == other.Name;
-        }
         public override string ToString()
         {
             return $"{Name}";
@@ -57,6 +53,17 @@ namespace MathExpression
 
             if (index >= names.Length) return -1;
             else return index;
+        }
+
+        public bool Equals(IExpression other)
+        {
+            bool flag = false;
+            if (other is Variable)
+            {
+                flag = Name == (other as Variable).Name;
+            }
+
+            return flag;
         }
     }
 }

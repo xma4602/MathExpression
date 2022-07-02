@@ -6,7 +6,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет математическую функцию с двумя параметрами, как узел дерева выражений.
     /// </summary>
-    public class DoubleParametredFunction : Function, IExpression, IEquatable<DoubleParametredFunction>
+    public class DoubleParametredFunction : Function, IExpression
     {
         /// <summary>
         /// Математическая функция выражения.
@@ -72,11 +72,6 @@ namespace MathExpression
             return func;
         }
 
-        public bool Equals(DoubleParametredFunction other)
-        {
-            return LowArgument.Equals(other) && LowArgument.Equals(other) && Type.Equals(other);
-        }
-
         public override string ToString()
         {
             if (Type == DoubleParametredFunctionType.Pow) return $"({LowArgument})^({HighArgument})";
@@ -97,6 +92,19 @@ namespace MathExpression
 
             if (HighArgument is Variable) HighArgument = SetValuesForVariables((Variable)HighArgument, names, values);
             else if (HighArgument is Function) ((Function)HighArgument).SetValuesForVariables(names, values);
+        }
+
+        public bool Equals(IExpression other)
+        {
+            bool flag = false;
+
+            if (other is DoubleParametredFunction)
+            {
+                var otherFunction = (DoubleParametredFunction)other;
+                flag = Type == otherFunction.Type && LowArgument.Equals(otherFunction.LowArgument) && HighArgument.Equals(otherFunction.HighArgument);
+            }
+
+            return flag;
         }
     }
 }

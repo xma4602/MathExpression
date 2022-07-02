@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет математическую функцию с одним параметром, как узел дерева выражений.
     /// </summary>
-    public class SingleParametredFunction : Function, IExpression, IEquatable<SingleParametredFunction>
+    public class SingleParametredFunction : Function, IExpression
     {
         /// <summary>
         /// Математическая функция выражения.
@@ -34,8 +34,8 @@ namespace MathExpression
         /// </summary>
         /// <param name="type">Тип математиеской функции</param>
         /// <param name="argument">Выражение-аргумент функции.</param>
-        public SingleParametredFunction(SingleParametredFunctionType type, IExpression argument) 
-            : this (GetFuctionBy(type), argument, type)
+        public SingleParametredFunction(SingleParametredFunctionType type, IExpression argument)
+            : this(GetFuctionBy(type), argument, type)
         {
         }
         public SingleParametredFunction(Func<double, double> func, IExpression argument, SingleParametredFunctionType type)
@@ -90,10 +90,6 @@ namespace MathExpression
             return func;
         }
 
-        public bool Equals(SingleParametredFunction other)
-        {
-            return Argument.Equals(other) && Type.Equals(other);
-        }
         public override string ToString()
         {
             if (SingleParametredFunctionType.Sin < Type && Type < SingleParametredFunctionType.Sqrt) return $"{Type}({Argument})";
@@ -102,13 +98,26 @@ namespace MathExpression
 
         public double GetValue(string[] names, double[] values)
         {
-            return Function(Argument.GetValue(names,values));
+            return Function(Argument.GetValue(names, values));
         }
 
         public override void SetValuesForVariables(string[] names, double[] values)
         {
             if (Argument is Variable) Argument = SetValuesForVariables((Variable)Argument, names, values);
             else if (Argument is Function) ((Function)Argument).SetValuesForVariables(names, values);
+        }
+
+        public bool Equals(IExpression other)
+        {
+            bool flag = false;
+
+            if (other is SingleParametredFunction)
+            {
+                var otherFunction = (SingleParametredFunction)other;
+                flag = Type == otherFunction.Type && Argument.Equals(otherFunction.Argument);
+            }
+
+            return flag;
         }
     }
 }

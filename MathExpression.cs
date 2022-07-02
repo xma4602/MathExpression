@@ -5,7 +5,7 @@ namespace MathExpression
     /// <summary>
     /// Представляет математическое выражение в виде дерева выражений.
     /// </summary>
-    public class MathExpression : Function
+    public class MathExpression : Function, IExpression
     {
         /// <summary>
         /// Начально математического выражения.
@@ -32,6 +32,11 @@ namespace MathExpression
         {
             if (Start is Variable) Start = SetValuesForVariables((Variable)Start, names, values);
             else if (Start is Function) ((Function)Start).SetValuesForVariables(names, values);
+        }
+
+        public bool Equals(IExpression other)
+        {
+            return Start.Equals(other);
         }
 
         #region методы задания дерева
@@ -88,7 +93,7 @@ namespace MathExpression
             Start = side ? new DoubleParametredFunction(function, secondOperand, Start) :
                 new DoubleParametredFunction(function, Start, secondOperand);
         }
-       
+                
         #endregion
 
         #region Операторы
