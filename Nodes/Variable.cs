@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MathExpressionTree
 {
@@ -56,6 +57,11 @@ namespace MathExpressionTree
         public IExpression Clone()
         {
             return new Variable((string)Name.Clone());
+        }
+
+        IEnumerable<string> IExpression.GetContainedVariables()
+        {
+            return new string[] { (string)Name.Clone() };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MathExpressionTree
 {
@@ -123,6 +124,11 @@ namespace MathExpressionTree
         public IExpression Clone()
         {
             return new SingleParametredFunction(Type, Argument.Clone());
+        }
+
+        public IEnumerable<string> GetContainedVariables()
+        {
+            return Argument.GetContainedVariables();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MathExpressionTree
 {
@@ -42,6 +43,11 @@ namespace MathExpressionTree
         public IExpression Clone()
         {
             return new MathExpression(Start.Clone());
+        }
+
+        IEnumerable<string> IExpression.GetContainedVariables()
+        {
+            return Start.GetContainedVariables();
         }
 
         #region методы задания дерева

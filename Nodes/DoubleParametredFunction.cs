@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MathExpressionTree
 {
@@ -109,6 +110,17 @@ namespace MathExpressionTree
         public IExpression Clone()
         {
             return new DoubleParametredFunction(Type, LowArgument.Clone(), HighArgument.Clone());
+        }
+
+        public IEnumerable<string> GetContainedVariables()
+        {
+            List<string> vars1 = (List<string>)LowArgument.GetContainedVariables();
+            List<string> vars2 = (List<string>)HighArgument.GetContainedVariables();
+
+            foreach (string var in vars2)
+                if (!vars1.Contains(var)) vars1.Add(var);
+
+            return vars1;
         }
     }
 }

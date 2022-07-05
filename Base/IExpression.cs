@@ -20,5 +20,13 @@ namespace MathExpressionTree
         /// </summary>
         /// <returns>Клон экземпляра.</returns>
         IExpression Clone();
+
+        //IExpression GetPartialDifferentialBy(string variableName);
+
+        /// <summary>
+        /// Производит поиск переменных в узле дерева выражений и его потомках.
+        /// </summary>
+        /// <returns>Набор переменных, которые содержатся в узле дерева выражений и его потомках.</returns>
+        IEnumerable<string> GetContainedVariables();
     }
 }
