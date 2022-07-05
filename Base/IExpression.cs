@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MathExpressionTree
 {
@@ -13,5 +14,11 @@ namespace MathExpressionTree
         /// <param name="arguments">Аргументы переменных математического выражения.</param>
         /// <returns>Результат вычисления.</returns>
         double GetValue(string[] names, double[] values);
+
+        /// <summary>
+        /// Создает экземпляр с аналогичными значениями данного экземпляра.
+        /// </summary>
+        /// <returns>Клон экземпляра.</returns>
+        IExpression Clone();
     }
 }

@@ -39,6 +39,11 @@ namespace MathExpressionTree
             return Start.Equals(other);
         }
 
+        public IExpression Clone()
+        {
+            return new MathExpression(Start.Clone());
+        }
+
         #region методы задания дерева
 
         /// <summary>

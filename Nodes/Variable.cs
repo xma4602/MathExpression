@@ -21,19 +21,6 @@ namespace MathExpressionTree
             Name = name;
         }
 
-        /*
-        /// <summary>
-        /// Инициализирует переменную с именем и индексами, как узел дерева выражений.
-        /// </summary>
-        /// <param name="name">Имя переменной.</param>
-        /// <param name="indexes">Имена индексов переменной.</param>
-        public Variable(string name, params string[] indexes)
-        {
-            Name = name;
-            Indexes = indexes;
-        }
-        */
-
         public override string ToString()
         {
             return $"{Name}";
@@ -41,12 +28,12 @@ namespace MathExpressionTree
 
         public double GetValue(string[] names, double[] values)
         {
-            int index = GetMassiveIndex(names, values);
+            int index = GetMassiveIndex(names);
             if (index < 0) throw new InvalidOperationException();
             else return values[index];
         }
 
-        private int GetMassiveIndex(string[] names, double[] values)
+        private int GetMassiveIndex(string[] names)
         {
             int index = 0;
             for (; Name != names[index] && index < names.Length; index++) { }
@@ -64,6 +51,11 @@ namespace MathExpressionTree
             }
 
             return flag;
+        }
+
+        public IExpression Clone()
+        {
+            return new Variable((string)Name.Clone());
         }
     }
 }

@@ -46,7 +46,7 @@ namespace MathExpressionTree
         {
         }
 
-        public DoubleParametredFunction(Func<double, double, double> func, DoubleParametredFunctionType type, IExpression lowArgument, IExpression highArgument)
+        protected DoubleParametredFunction(Func<double, double, double> func, DoubleParametredFunctionType type, IExpression lowArgument, IExpression highArgument)
         {
             Type = type;
             LowArgument = lowArgument;
@@ -87,24 +87,28 @@ namespace MathExpressionTree
 
         public override void SetValuesForVariables(string[] names, double[] values)
         {
-            if (LowArgument is Variable) LowArgument = SetValuesForVariables((Variable)LowArgument, names, values);
-            else if (LowArgument is Function) ((Function)LowArgument).SetValuesForVariables(names, values);
+            if (LowArgument is Variable variable) LowArgument = SetValuesForVariables(variable, names, values);
+            else if (LowArgument is Function function) function.SetValuesForVariables(names, values);
 
-            if (HighArgument is Variable) HighArgument = SetValuesForVariables((Variable)HighArgument, names, values);
-            else if (HighArgument is Function) ((Function)HighArgument).SetValuesForVariables(names, values);
+            if (HighArgument is Variable variable1) HighArgument = SetValuesForVariables(variable1, names, values);
+            else if (HighArgument is Function function) function.SetValuesForVariables(names, values);
         }
 
         public bool Equals(IExpression other)
         {
             bool flag = false;
 
-            if (other is DoubleParametredFunction)
+            if (other is DoubleParametredFunction otherFunction)
             {
-                var otherFunction = (DoubleParametredFunction)other;
                 flag = Type == otherFunction.Type && LowArgument.Equals(otherFunction.LowArgument) && HighArgument.Equals(otherFunction.HighArgument);
             }
 
             return flag;
+        }
+
+        public IExpression Clone()
+        {
+            return new DoubleParametredFunction(Type, LowArgument.Clone(), HighArgument.Clone());
         }
     }
 }

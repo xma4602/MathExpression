@@ -41,5 +41,10 @@ namespace MathExpressionTree
 
             return flag;
         }
+
+        public IExpression Clone()
+        {
+            return new Constant(Value);
+        }
     }
 }

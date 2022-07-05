@@ -80,21 +80,19 @@ namespace MathExpressionTree
 
         public override void SetValuesForVariables(string[] names, double[] values)
         {
-            if (LeftOperand is Variable) LeftOperand = SetValuesForVariables((Variable)LeftOperand, names, values);
-            else if (LeftOperand is Function) ((Function)LeftOperand).SetValuesForVariables(names, values);
+            if (LeftOperand is Variable variable) LeftOperand = SetValuesForVariables(variable, names, values);
+            else if (LeftOperand is Function function) function.SetValuesForVariables(names, values);
 
-            if (RightOperand is Variable) RightOperand = SetValuesForVariables((Variable)RightOperand, names, values);
-            else if (RightOperand is Function) ((Function)RightOperand).SetValuesForVariables(names, values);
+            if (RightOperand is Variable variable1) RightOperand = SetValuesForVariables(variable1, names, values);
+            else if (RightOperand is Function function) function.SetValuesForVariables(names, values);
         }
 
         public bool Equals(IExpression other)
         {
             bool flag = false;
 
-            if (other is Operation)
+            if (other is Operation otherOperation)
             {
-                Operation otherOperation = (Operation)other;
-
                 if (Type.Equals(otherOperation.Type))
                 {
                     if (Type == MathOperation.Addition || Type == MathOperation.Multiplication)
@@ -110,6 +108,11 @@ namespace MathExpressionTree
             }
 
             return flag;
+        }
+
+        public IExpression Clone()
+        {
+            return new Operation(Type, LeftOperand.Clone(), RightOperand.Clone());
         }
     }
 }

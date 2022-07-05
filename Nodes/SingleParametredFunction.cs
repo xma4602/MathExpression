@@ -38,7 +38,8 @@ namespace MathExpressionTree
             : this(GetFuctionBy(type), argument, type)
         {
         }
-        public SingleParametredFunction(Func<double, double> func, IExpression argument, SingleParametredFunctionType type)
+
+        protected SingleParametredFunction(Func<double, double> func, IExpression argument, SingleParametredFunctionType type)
         {
             Argument = argument;
             Function = func;
@@ -103,21 +104,25 @@ namespace MathExpressionTree
 
         public override void SetValuesForVariables(string[] names, double[] values)
         {
-            if (Argument is Variable) Argument = SetValuesForVariables((Variable)Argument, names, values);
-            else if (Argument is Function) ((Function)Argument).SetValuesForVariables(names, values);
+            if (Argument is Variable variable) Argument = SetValuesForVariables(variable, names, values);
+            else if (Argument is Function function) function.SetValuesForVariables(names, values);
         }
 
         public bool Equals(IExpression other)
         {
             bool flag = false;
 
-            if (other is SingleParametredFunction)
+            if (other is SingleParametredFunction otherFunction)
             {
-                var otherFunction = (SingleParametredFunction)other;
                 flag = Type == otherFunction.Type && Argument.Equals(otherFunction.Argument);
             }
 
             return flag;
+        }
+
+        public IExpression Clone()
+        {
+            return new SingleParametredFunction(Type, Argument.Clone());
         }
     }
 }
