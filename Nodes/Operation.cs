@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MathExpression
+namespace MathExpressionTree
 {
     /// <summary>
     /// Представляет математическую операцию, как узел дерева выражений.

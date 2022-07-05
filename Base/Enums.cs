@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MathExpression
+namespace MathExpressionTree
 {
     /// <summary>
     /// Представляет перечисление основных математических функций с одним параметром.

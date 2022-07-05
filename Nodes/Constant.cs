@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MathExpression
+namespace MathExpressionTree
 {
     /// <summary>
     /// Представляет константное значение, как узел дерева выражений.

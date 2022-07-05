@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MathExpression
+namespace MathExpressionTree
 {
     /// <summary>
     /// Представляет математическое выражение в виде дерева выражений.
@@ -30,8 +30,8 @@ namespace MathExpression
 
         public override void SetValuesForVariables(string[] names, double[] values)
         {
-            if (Start is Variable) Start = SetValuesForVariables((Variable)Start, names, values);
-            else if (Start is Function) ((Function)Start).SetValuesForVariables(names, values);
+            if (Start is Variable variable) Start = SetValuesForVariables(variable, names, values);
+            else if (Start is Function function) function.SetValuesForVariables(names, values);
         }
 
         public bool Equals(IExpression other)
@@ -93,7 +93,7 @@ namespace MathExpression
             Start = side ? new DoubleParametredFunction(function, secondOperand, Start) :
                 new DoubleParametredFunction(function, Start, secondOperand);
         }
-                
+
         #endregion
 
         #region Операторы
@@ -140,5 +140,84 @@ namespace MathExpression
         }
 
         #endregion
+
+        /*
+        private class Compilator
+        {
+            public IExpression Compile(string expression)
+            {
+                string[] expr = Group(expression);
+            }
+
+            private string[] Group(string expression)
+            {
+                var expr = new List<string>();
+                var store = new List<char>();
+
+                for (int i = 0; i < expression.Length; i++)
+                {
+                    if (IsNumber(expression[i]))
+                    {
+                        store.Add(expression[i]);
+                    }
+                    else if (IsVar(expression[i]))
+                    {
+                        store.Add(expression[i]);
+                    }
+                    else if (IsOper(expression[i]))
+                    {
+                        store.Add(expression[i]);
+                    }
+
+                }
+            }
+
+            private bool IsOper(char v)
+            {
+                switch (v)
+                {
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                    case '^':
+                        return true;
+
+                    default: return false;
+                }
+                StringBuilder
+            }
+
+            private bool IsVar(char v)
+            {
+                return ('A' <= v && v >= 'Z') ||
+                    ('a' <= v && v <= 'z') ||
+                    ('А' <= v && v <= 'Я') ||
+                    ('а' <= v && v <= 'я');
+            }
+
+            private bool IsNumber(char v)
+            {
+                switch (v)
+                {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '.':
+                    case ',':
+                        return true;
+
+                    default: return false;
+                }
+            }
+        }
+        */
     }
 }
