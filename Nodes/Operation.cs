@@ -126,5 +126,16 @@ namespace MathExpressionTree
 
             return vars1;
         }
+
+        public IEnumerable<double> GetContainedConstants()
+        {
+            List<double> varsLow = (List<double>)LeftOperand.GetContainedConstants();
+            List<double> varsHigh = (List<double>)RightOperand.GetContainedConstants();
+
+            foreach (double var in varsHigh)
+                if (!varsLow.Contains(var)) varsLow.Add(var);
+
+            return varsLow;
+        }
     }
 }

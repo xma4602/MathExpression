@@ -114,13 +114,24 @@ namespace MathExpressionTree
 
         public IEnumerable<string> GetContainedVariables()
         {
-            List<string> vars1 = (List<string>)LowArgument.GetContainedVariables();
-            List<string> vars2 = (List<string>)HighArgument.GetContainedVariables();
+            List<string> varsLow = (List<string>)LowArgument.GetContainedVariables();
+            List<string> varsHigh = (List<string>)HighArgument.GetContainedVariables();
 
-            foreach (string var in vars2)
-                if (!vars1.Contains(var)) vars1.Add(var);
+            foreach (string var in varsHigh)
+                if (!varsLow.Contains(var)) varsLow.Add(var);
 
-            return vars1;
+            return varsLow;
+        }
+
+        public IEnumerable<double> GetContainedConstants()
+        {
+            List<double> varsLow = (List<double>)LowArgument.GetContainedConstants();
+            List<double> varsHigh = (List<double>)HighArgument.GetContainedConstants();
+
+            foreach (double var in varsHigh)
+                if (!varsLow.Contains(var)) varsLow.Add(var);
+
+            return varsLow;
         }
     }
 }

@@ -52,5 +52,10 @@ namespace MathExpressionTree
         {
             return new string[] { };
         }
+
+        public IEnumerable<double> GetContainedConstants()
+        {
+            return new double[] { Value };
+        }
     }
 }

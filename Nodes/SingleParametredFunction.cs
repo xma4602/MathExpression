@@ -130,5 +130,10 @@ namespace MathExpressionTree
         {
             return Argument.GetContainedVariables();
         }
+
+        public IEnumerable<double> GetContainedConstants()
+        {
+            return Argument.GetContainedConstants();
+        }
     }
 }

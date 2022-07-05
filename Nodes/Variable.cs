@@ -63,5 +63,10 @@ namespace MathExpressionTree
         {
             return new string[] { (string)Name.Clone() };
         }
+
+        public IEnumerable<double> GetContainedConstants()
+        {
+            return new double[] { };
+        }
     }
 }

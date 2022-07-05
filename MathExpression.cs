@@ -45,9 +45,14 @@ namespace MathExpressionTree
             return new MathExpression(Start.Clone());
         }
 
-        IEnumerable<string> IExpression.GetContainedVariables()
+        public IEnumerable<string> GetContainedVariables()
         {
             return Start.GetContainedVariables();
+        }
+
+        public IEnumerable<double> GetContainedConstants()
+        {
+            return Start.GetContainedConstants();
         }
 
         #region методы задания дерева
@@ -104,6 +109,7 @@ namespace MathExpressionTree
             Start = side ? new DoubleParametredFunction(function, secondOperand, Start) :
                 new DoubleParametredFunction(function, Start, secondOperand);
         }
+
 
         #endregion
 

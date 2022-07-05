@@ -28,5 +28,11 @@ namespace MathExpressionTree
         /// </summary>
         /// <returns>Набор переменных, которые содержатся в узле дерева выражений и его потомках.</returns>
         IEnumerable<string> GetContainedVariables();
+
+        /// <summary>
+        /// Производит поиск постоянных в узле дерева выражений и его потомках.
+        /// </summary>
+        /// <returns>Набор постоянных, которые содержатся в узле дерева выражений и его потомках.</returns>
+        IEnumerable<double> GetContainedConstants();
     }
 }
