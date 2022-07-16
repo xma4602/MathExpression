@@ -68,5 +68,10 @@ namespace MathExpressionTree
         {
             return new double[] { };
         }
+
+        public IExpression GetPartialDifferentialBy(string variableName)
+        {
+            return Name == variableName ? new Constant(1) : new Constant(0);
+        }
     }
 }

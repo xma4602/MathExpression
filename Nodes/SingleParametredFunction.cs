@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static MathExpressionTree.SingleParametredFunctionType;
 
 namespace MathExpressionTree
 {
@@ -58,34 +59,37 @@ namespace MathExpressionTree
             switch (type)
             {
                 //синусоподобные
-                case SingleParametredFunctionType.Sin: func = Math.Sin; break;
-                case SingleParametredFunctionType.Arcsin: func = Math.Asin; break;
-                case SingleParametredFunctionType.Sh: func = Math.Sinh; break;
-                case SingleParametredFunctionType.Arcsh: func = (x) => Math.Log(x + Math.Sqrt(x * x + 1)); break;
+                case Sin: func = Math.Sin; break;
+                case Arcsin: func = Math.Asin; break;
+                case Sh: func = Math.Sinh; break;
+                case Arcsh: func = (x) => Math.Log(x + Math.Sqrt(x * x + 1)); break;
                 //косинусоподобные
-                case SingleParametredFunctionType.Cos: func = Math.Cos; break;
-                case SingleParametredFunctionType.Arccos: func = Math.Acos; break;
-                case SingleParametredFunctionType.Ch: func = Math.Cosh; break;
-                case SingleParametredFunctionType.Arcch: func = (x) => Math.Log(x + Math.Sqrt(x * x - 1)); break;
+                case Cos: func = Math.Cos; break;
+                case Arccos: func = Math.Acos; break;
+                case Ch: func = Math.Cosh; break;
+                case Arcch: func = (x) => Math.Log(x + Math.Sqrt(x * x - 1)); break;
                 //тангенсоподобные
-                case SingleParametredFunctionType.Tg: func = Math.Tan; break;
-                case SingleParametredFunctionType.Arctg: func = Math.Atan; break;
-                case SingleParametredFunctionType.Th: func = Math.Tanh; break;
-                case SingleParametredFunctionType.Arcth: func = (x) => 0.5 * Math.Log((1 + x) / (1 - x)); break;
+                case Tg: func = Math.Tan; break;
+                case Arctg: func = Math.Atan; break;
+                case Th: func = Math.Tanh; break;
+                case Arcth: func = (x) => 0.5 * Math.Log((1 + x) / (1 - x)); break;
                 //котангенсоподобные
-                case SingleParametredFunctionType.Ctg: func = (x) => 1 / Math.Tan(x); break;
-                case SingleParametredFunctionType.Arcctg: func = (x) => 1 / Math.Atan(x); break;
-                case SingleParametredFunctionType.Cth: func = (x) => 1 / Math.Tanh(x); break;
-                case SingleParametredFunctionType.Arccth: func = (x) => 0.5 * Math.Log((x + 1) / (x - 1)); break;
+                case Ctg: func = (x) => 1 / Math.Tan(x); break;
+                case Arcctg: func = (x) => 1 / Math.Atan(x); break;
+                case Cth: func = (x) => 1 / Math.Tanh(x); break;
+                case Arccth: func = (x) => 0.5 * Math.Log((x + 1) / (x - 1)); break;
                 //логарифмы
-                case SingleParametredFunctionType.Ln: func = Math.Log; break;
-                case SingleParametredFunctionType.Log2: func = (x) => Math.Log(x, 2); break;
-                case SingleParametredFunctionType.Log10: func = Math.Log10; break;
+                case Ln: func = Math.Log; break;
+                case Log2: func = (x) => Math.Log(x, 2); break;
+                case Log10: func = Math.Log10; break;
+                //остальные
+                case Abs: func = Math.Abs; break;
+                case Sqr: func = (x) => Math.Pow(x, 2); break;
+                case Sqrt: func = Math.Sqrt; break;
 
-                case SingleParametredFunctionType.Abs: func = Math.Abs; break;
-                case SingleParametredFunctionType.Sqr: func = (x) => Math.Pow(x, 2); break;
-                case SingleParametredFunctionType.Sqrt: func = Math.Sqrt; break;
-
+                //неопределенная
+                case NotDefined:
+                    throw new ArgumentException(nameof(type), $"Невозвожно определить функцию для значения {type}.");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), $"Параметр должен принадлежать типу {nameof(SingleParametredFunctionType)}.");
             }
@@ -135,5 +139,125 @@ namespace MathExpressionTree
         {
             return Argument.GetContainedConstants();
         }
+
+        public IExpression GetPartialDifferentialBy(string variableName)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected static class SingleParametredDifferentialFunction
+        {
+            //синусоподобные
+            public static IExpression Sin(IExpression argument, string variableName)
+            {
+                return new Operation(
+                    MathOperation.Multiplication,
+                    new SingleParametredFunction(SingleParametredFunctionType.Cos, argument),
+                    argument.GetPartialDifferentialBy(variableName)
+                    );
+            }
+            public static IExpression Arcsin(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Sh(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arcsh(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            //косинусоподобные
+            public static IExpression Cos(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arccos(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Ch(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arcch(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            //тангенсоподобные
+            public static IExpression Tg(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arctg(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Th(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arcth(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Ctg(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arcctg(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Cth(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Arccth(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            //логарифмы
+            public static IExpression Ln(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Log2(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            public static IExpression Log10(IExpression argument, string variableName)
+            {
+                throw new NotImplementedException();
+            }
+            //остальные
+            public static IExpression Abs(IExpression argument, string variableName)
+            {
+                var x = argument.GetPartialDifferentialBy(variableName);
+                return new Operation(
+                       MathOperation.Division,
+                       x,
+                       new SingleParametredFunction(SingleParametredFunctionType.Abs, x)
+                       );
+            }
+            public static IExpression Sqr(IExpression argument, string variableName)
+            {
+                return new Operation(
+                   MathOperation.Multiplication,
+                   new Constant(2),
+                   argument.GetPartialDifferentialBy(variableName)
+                   );
+            }
+            public static IExpression Sqrt(IExpression argument, string variableName)
+            {
+                return new Operation(
+                        MathOperation.Multiplication,
+                        new Constant(2),
+                        argument.GetPartialDifferentialBy(variableName)
+                        );
+            }
+        }
+
     }
 }

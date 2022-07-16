@@ -21,7 +21,12 @@ namespace MathExpressionTree
         /// <returns>Клон экземпляра.</returns>
         IExpression Clone();
 
-        //IExpression GetPartialDifferentialBy(string variableName);
+        /// <summary>
+        /// Вычисляет частную производную выражения по указанной переменной.
+        /// </summary>
+        /// <param name="variableName">Переменная дифференцирования.</param>
+        /// <returns>Узел дерева выражений с потомками, предсталяющий частную производную выражения.</returns>
+        IExpression GetPartialDifferentialBy(string variableName);
 
         /// <summary>
         /// Производит поиск переменных в узле дерева выражений и его потомках.

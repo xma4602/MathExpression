@@ -29,7 +29,10 @@ namespace MathExpressionTree
         /// Инициализирует константу, как узел дерева выражений.
         /// </summary>
         /// <param name="value">Значение константы.</param>
-        public Constant(double value): this(value, false, false)
+        public Constant(double value): 
+            this(value,
+            value == Math.PI,
+            value == Math.E)
         {
 
         }
@@ -81,6 +84,11 @@ namespace MathExpressionTree
         public IEnumerable<double> GetContainedConstants()
         {
             return new double[] { Value };
+        }
+
+        public IExpression GetPartialDifferentialBy(string variableName)
+        {
+            return new Constant(0);
         }
     }
 }

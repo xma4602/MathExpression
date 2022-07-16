@@ -22,11 +22,29 @@ namespace MathExpressionTree
             Start = start ?? throw new ArgumentNullException("Элемент формулы не может быть null", nameof(start));
         }
 
-        /// <summary>
-        /// Вычисляет значение математического выражения, исходя из значений переданных аргументов.
-        /// </summary>
-        /// <param name="arguments">Аргументы переменных математического выражения.</param>
-        /// <returns>Результат вычисления.</returns>
+        public MathExpression(string varibleName)
+        {
+            Start = new Variable((string)varibleName.Clone());
+        }
+        public MathExpression(double value)
+        {
+            Start = new Constant(value);
+        }
+        public MathExpression(MathOperation type, IExpression leftOperand, IExpression rightOperand)
+        {
+            Start = new Operation(type, leftOperand, rightOperand);
+        }
+        public MathExpression(SingleParametredFunctionType type, IExpression argument)
+        {
+            Start = new SingleParametredFunction(type, argument);
+        }
+        public MathExpression(DoubleParametredFunctionType type, IExpression lowArgument, IExpression highArgument)
+        {
+            Start = new DoubleParametredFunction(type, lowArgument, highArgument);
+        }
+
+        #region методы интерфейса IExpression
+
         public double GetValue(string[] names, double[] values) => Start.GetValue(names, values);
 
         public override void SetValuesForVariables(string[] names, double[] values)
@@ -54,6 +72,14 @@ namespace MathExpressionTree
         {
             return Start.GetContainedConstants();
         }
+
+        public IExpression GetPartialDifferentialBy(string variableName)
+        {
+            return Start.GetPartialDifferentialBy(variableName);
+        }
+
+
+        #endregion
 
         #region методы задания дерева
 
@@ -110,7 +136,6 @@ namespace MathExpressionTree
                 new DoubleParametredFunction(function, Start, secondOperand);
         }
 
-
         #endregion
 
         #region Операторы
@@ -157,84 +182,5 @@ namespace MathExpressionTree
         }
 
         #endregion
-
-        /*
-        private class Compilator
-        {
-            public IExpression Compile(string expression)
-            {
-                string[] expr = Group(expression);
-            }
-
-            private string[] Group(string expression)
-            {
-                var expr = new List<string>();
-                var store = new List<char>();
-
-                for (int i = 0; i < expression.Length; i++)
-                {
-                    if (IsNumber(expression[i]))
-                    {
-                        store.Add(expression[i]);
-                    }
-                    else if (IsVar(expression[i]))
-                    {
-                        store.Add(expression[i]);
-                    }
-                    else if (IsOper(expression[i]))
-                    {
-                        store.Add(expression[i]);
-                    }
-
-                }
-            }
-
-            private bool IsOper(char v)
-            {
-                switch (v)
-                {
-                    case '+':
-                    case '-':
-                    case '*':
-                    case '/':
-                    case '^':
-                        return true;
-
-                    default: return false;
-                }
-                StringBuilder
-            }
-
-            private bool IsVar(char v)
-            {
-                return ('A' <= v && v >= 'Z') ||
-                    ('a' <= v && v <= 'z') ||
-                    ('А' <= v && v <= 'Я') ||
-                    ('а' <= v && v <= 'я');
-            }
-
-            private bool IsNumber(char v)
-            {
-                switch (v)
-                {
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9':
-                    case '.':
-                    case ',':
-                        return true;
-
-                    default: return false;
-                }
-            }
-        }
-        */
     }
 }

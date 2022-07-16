@@ -133,6 +133,24 @@ namespace MathExpressionTree
 
             return varsLow;
         }
+
+        public IExpression GetPartialDifferentialBy(string variableName)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected static class DoubleParametredDifferentialFunction
+        {
+            public static IExpression Pow(IExpression lowArgument, IExpression highArgument, string variableName) 
+            {
+                throw new NotImplementedException();
+            }
+
+            public static IExpression Log(IExpression lowArgument, IExpression highArgument, string variableName) 
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
 
