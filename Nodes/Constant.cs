@@ -13,13 +13,26 @@ namespace MathExpressionTree
         /// </summary>
         public double Value { get; }
 
+        /// <summary>
+        /// Определяет, является ли данная константа математической константой
+        /// </summary>
         public bool IsPI { get; }
+        /// <summary>
+        /// Определяет, является ли данная константа математической константой е.
+        /// </summary>
         public bool IsE { get; }
 
+        /// <summary>
+        /// Представляет математическую константу π.
+        /// </summary>
         public static Constant PI
         {
             get { return new Constant(Math.PI, true, false); }
         }
+
+        /// <summary>
+        /// Представляет математическую константу е.
+        /// </summary>
         public static Constant E
         {
             get { return new Constant(Math.E, false , true); }

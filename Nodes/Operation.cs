@@ -137,5 +137,10 @@ namespace MathExpressionTree
 
             return varsLow;
         }
+
+        IExpression IExpression.GetPartialDifferentialBy(string variableName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
