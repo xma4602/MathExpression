@@ -23,20 +23,19 @@ namespace MathExpressionTree
         public bool IsE => Value == Math.E;
 
         /// <summary>
+        /// Представляет значение 0.
+        /// </summary>
+        public static Constant Zero => new Constant(0);
+
+        /// <summary>
         /// Представляет математическую константу π.
         /// </summary>
-        public static Constant PI
-        {
-            get { return new Constant(Math.PI); }
-        }
+        public static Constant PI => new Constant(Math.PI);
 
         /// <summary>
         /// Представляет математическую константу е.
         /// </summary>
-        public static Constant E
-        {
-            get { return new Constant(Math.E); }
-        }
+        public static Constant E => new Constant(Math.E);
 
         /// <summary>
         /// Инициализирует константу, как узел дерева выражений.
@@ -118,26 +117,6 @@ namespace MathExpressionTree
         /// <param name="left">Левый операнд сравления.</param>
         /// <param name="right">Правый операнд сравления.</param>
         /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
-        public static bool operator ==(IExpression left, Constant right)
-        {
-            return right.Equals(left);
-        }
-        /// <summary>
-        /// Проверяет два объекта на равенство, сравнивая их константные значения.
-        /// </summary>
-        /// <param name="left">Левый операнд сравления.</param>
-        /// <param name="right">Правый операнд сравления.</param>
-        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
-        public static bool operator ==(Constant left, IExpression right)
-        {
-            return left.Equals(right);
-        }
-        /// <summary>
-        /// Проверяет два объекта на равенство, сравнивая их константные значения.
-        /// </summary>
-        /// <param name="left">Левый операнд сравления.</param>
-        /// <param name="right">Правый операнд сравления.</param>
-        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
         public static bool operator ==(double left, Constant right)
         {
             return left == right.Value;
@@ -152,6 +131,26 @@ namespace MathExpressionTree
         {
             return left.Value == right;
         }
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их деревья выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если деревья выражений равны, и false в противном случае.</returns>
+        public static bool operator ==(IExpression left, Constant right)
+        {
+            return right.Equals(left);
+        }
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их деревья выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если деревья выражений равны, и false в противном случае.</returns>
+        public static bool operator ==(Constant left, IExpression right)
+        {
+            return left.Equals(right);
+        }
 
         /// <summary>
         /// Проверяет два объекта на неравенство, сравнивая их константные значения.
@@ -162,26 +161,6 @@ namespace MathExpressionTree
         public static bool operator !=(Constant left, Constant right)
         {
             return left.Value != right.Value;
-        }
-        /// <summary>
-        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
-        /// </summary>
-        /// <param name="left">Левый операнд сравления.</param>
-        /// <param name="right">Правый операнд сравления.</param>
-        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
-        public static bool operator !=(IExpression left, Constant right)
-        {
-            return !right.Equals(left);
-        }
-        /// <summary>
-        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
-        /// </summary>
-        /// <param name="left">Левый операнд сравления.</param>
-        /// <param name="right">Правый операнд сравления.</param>
-        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
-        public static bool operator !=(Constant left, IExpression right)
-        {
-            return !left.Equals(right);
         }
         /// <summary>
         /// Проверяет два объекта на неравенство, сравнивая их константные значения.
@@ -202,6 +181,26 @@ namespace MathExpressionTree
         public static bool operator !=(Constant left, double right)
         {
             return left.Value != right;
+        }
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их деревья выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если деревья выражений не равны, и false в противном случае.</returns>
+        public static bool operator !=(IExpression left, Constant right)
+        {
+            return !right.Equals(left);
+        }
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их деревья выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если деревья выражений не равны, и false в противном случае.</returns>
+        public static bool operator !=(Constant left, IExpression right)
+        {
+            return !left.Equals(right);
         }
 
         /// <summary>
@@ -253,6 +252,91 @@ namespace MathExpressionTree
         public static Constant operator /(Constant left, Constant right)
         {
             return new Constant(left.Value / right.Value);
+        }
+
+        /// <summary>
+        /// Производит операцию сложения двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево суммы двух выражений.</returns>
+        public static IExpression operator +(IExpression left, Constant right)
+        {
+            if (left is Constant constant) return constant + right;
+            else return new Operation(MathOperation.Addition, left, right);
+        }
+        /// <summary>
+        /// Производит операцию сложения двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево суммы двух выражений.</returns>
+        public static IExpression operator +(Constant left, IExpression right)
+        {
+            return new Operation(MathOperation.Addition, left, right);
+        }
+
+        /// <summary>
+        /// Производит операцию вычитания двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево разности двух выражений.</returns>
+        public static IExpression operator -(IExpression left, Constant right)
+        {
+            return new Operation(MathOperation.Substructing, left, right);
+        }
+        /// <summary>
+        /// Производит операцию вычитания двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево разности двух выражений.</returns>
+        public static IExpression operator -(Constant left, IExpression right)
+        {
+            return new Operation(MathOperation.Substructing, left, right);
+        }
+
+        /// <summary>
+        /// Производит операцию умножения двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево умножения двух выражений.</returns>
+        public static IExpression operator *(IExpression left, Constant right)
+        {
+            return new Operation(MathOperation.Multiplication, left, right);
+        }
+        /// <summary>
+        /// Производит операцию умножения двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево умножения двух выражений.</returns>
+        public static IExpression operator *(Constant left, IExpression right)
+        {
+            return new Operation(MathOperation.Multiplication, left, right);
+        }
+
+        /// <summary>
+        /// Производит операцию деления двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево деления двух выражений.</returns>
+        public static IExpression operator /(IExpression left, Constant right)
+        {
+            return new Operation(MathOperation.Division, left, right);
+        }
+        /// <summary>
+        /// Производит операцию деления двух выражений.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Дерево деления двух выражений.</returns>
+        public static IExpression operator /(Constant left, IExpression right)
+        {
+            return new Operation(MathOperation.Division, left, right);
         }
 
         #endregion
