@@ -16,18 +16,18 @@ namespace MathExpressionTree
         /// <summary>
         /// Определяет, является ли данная константа математической константой
         /// </summary>
-        public bool IsPI { get; }
+        public bool IsPI => Value == Math.PI;
         /// <summary>
         /// Определяет, является ли данная константа математической константой е.
         /// </summary>
-        public bool IsE { get; }
+        public bool IsE => Value == Math.E;
 
         /// <summary>
         /// Представляет математическую константу π.
         /// </summary>
         public static Constant PI
         {
-            get { return new Constant(Math.PI, true, false); }
+            get { return new Constant(Math.PI); }
         }
 
         /// <summary>
@@ -35,32 +35,16 @@ namespace MathExpressionTree
         /// </summary>
         public static Constant E
         {
-            get { return new Constant(Math.E, false , true); }
+            get { return new Constant(Math.E); }
         }
 
         /// <summary>
         /// Инициализирует константу, как узел дерева выражений.
         /// </summary>
         /// <param name="value">Значение константы.</param>
-        public Constant(double value): 
-            this(value,
-            value == Math.PI,
-            value == Math.E)
+        public Constant(double value)
         {
-
-        }
-
-        /// <summary>
-        /// Инициализирует константу, как узел дерева выражений.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="pi"></param>
-        /// <param name="e"></param>
-        protected Constant(double value, bool pi, bool e)
-        {
-            this.Value = value;
-            IsPI = pi;
-            IsE = e;
+            Value = value;
         }
 
         public override string ToString()
@@ -75,13 +59,11 @@ namespace MathExpressionTree
 
         public bool Equals(IExpression other)
         {
-            bool flag = false;
-            if (other is Constant)
-            {
-                flag = Value == (other as Constant).Value;
-            }
-
-            return flag;
+            return other is Constant constant ? constant.Value == Value : false;
+        }
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
         }
 
         public IExpression Clone()
@@ -103,5 +85,176 @@ namespace MathExpressionTree
         {
             return new Constant(0);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #region операторы
+
+        public static explicit operator double(Constant constant)
+        {
+            return constant.Value;
+        }
+        public static explicit operator Constant(double constant)
+        {
+            return new Constant(constant);
+        }
+
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
+        public static bool operator ==(Constant left, Constant right)
+        {
+            return left.Value == right.Value;
+        }
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
+        public static bool operator ==(IExpression left, Constant right)
+        {
+            return right.Equals(left);
+        }
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
+        public static bool operator ==(Constant left, IExpression right)
+        {
+            return left.Equals(right);
+        }
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
+        public static bool operator ==(double left, Constant right)
+        {
+            return left == right.Value;
+        }
+        /// <summary>
+        /// Проверяет два объекта на равенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения равны, и false в противном случае.</returns>
+        public static bool operator ==(Constant left, double right)
+        {
+            return left.Value == right;
+        }
+
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
+        public static bool operator !=(Constant left, Constant right)
+        {
+            return left.Value != right.Value;
+        }
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
+        public static bool operator !=(IExpression left, Constant right)
+        {
+            return !right.Equals(left);
+        }
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
+        public static bool operator !=(Constant left, IExpression right)
+        {
+            return !left.Equals(right);
+        }
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
+        public static bool operator !=(double left, Constant right)
+        {
+            return left != right.Value;
+        }
+        /// <summary>
+        /// Проверяет два объекта на неравенство, сравнивая их константные значения.
+        /// </summary>
+        /// <param name="left">Левый операнд сравления.</param>
+        /// <param name="right">Правый операнд сравления.</param>
+        /// <returns>Возвращает true, если константные значения не равны, и false в противном случае.</returns>
+        public static bool operator !=(Constant left, double right)
+        {
+            return left.Value != right;
+        }
+
+        /// <summary>
+        /// Инвертирует константу
+        /// </summary>
+        /// <param name="constant">Инверируемая костанта</param>
+        /// <returns>Возвращает константу с противоположным значением.</returns>
+        public static Constant operator -(Constant constant)
+        {
+            return new Constant(-constant.Value);
+        }
+
+        /// <summary>
+        /// Производит операцию сложения двух констант.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Результат сложения константных значений.</returns>
+        public static Constant operator +(Constant left, Constant right)
+        {
+            return new Constant(left.Value + right.Value);
+        }
+        /// <summary>
+        /// Производит операцию вычитания двух констант.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Результат вычитания константных значений.</returns>
+        public static Constant operator -(Constant left, Constant right)
+        {
+            return new Constant(left.Value - right.Value);
+        }
+        /// <summary>
+        /// Производит операцию умножения двух констант.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Результат умножения константных значений.</returns>
+        public static Constant operator *(Constant left, Constant right)
+        {
+            return new Constant(left.Value * right.Value);
+        }
+        /// <summary>
+        /// Производит операцию деления двух констант.
+        /// </summary>
+        /// <param name="left">Левый операнд операции.</param>
+        /// <param name="right">Правый операнд операции.</param>
+        /// <returns>Результат деления константных значений.</returns>
+        public static Constant operator /(Constant left, Constant right)
+        {
+            return new Constant(left.Value / right.Value);
+        }
+
+        #endregion
     }
 }
